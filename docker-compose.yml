@@ -1,0 +1,39 @@
+
+services:
+  vite-ts-app:
+    build:
+      context: ./my-vite-app                 
+      dockerfile: Dockerfile  
+    container_name: class-test
+    ports:
+      - "8080:80"
+    networks:
+      - class-network
+
+  class-app:
+    build:
+      context: ./SimpaleNodeApp               
+      dockerfile: Dockerfile  
+    container_name: class-app
+    ports:
+      - "3031:3000"
+    networks:
+      - class-network
+
+  mongo-db:
+    image: mongo
+    container_name: mongo-db
+    ports:
+      - "3032:27017"
+    networks:
+      - class-network
+    volumes:
+      - my_volume:/data/db
+    restart: always
+
+networks:
+  class-network:
+    driver: bridge
+
+volumes:
+  my_volume:
